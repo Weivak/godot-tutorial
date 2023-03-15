@@ -29,3 +29,20 @@ func _process(delta):
 	position += velocity * delta
 	position.x = clamp(position.x, 0, screen_size.x)
 	position.y = clamp(position.y, 0, screen_size.y)
+	
+	# animation of walk and up 
+	# flip_h property for left movement
+	# flip_v for downward movement
+	if velocity.x != 0:
+		$AnimatedSprite2D.animation = "Walk"
+		$AnimatedSprite2D.flip_v = false
+		# See the note below about boolean assignment.
+		$AnimatedSprite2D.flip_h = velocity.x < 0
+	elif velocity.y != 0:
+		$AnimatedSprite2D.animation = "Up"
+		$AnimatedSprite2D.flip_v = velocity.y > 0
+		
+	if velocity.x < 0:
+		$AnimatedSprite2D.flip_h = true
+	else:
+		$AnimatedSprite2D.flip_h = false
