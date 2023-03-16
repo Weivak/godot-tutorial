@@ -1,4 +1,5 @@
-extends Node2D
+extends Area2D
+signal hit
 
 @export var speed = 400 # How fast the player will move (pixels/sec).
 var screen_size # Size of the game window.
@@ -6,6 +7,8 @@ var screen_size # Size of the game window.
 # checking screen 
 func _ready():
 	screen_size = get_viewport_rect().size
+	# hide de player when the game starts
+	hide()
 
 func _process(delta):
 	var velocity = Vector2.ZERO # The player's movement vector.
@@ -46,3 +49,15 @@ func _process(delta):
 		$AnimatedSprite2D.flip_h = true
 	else:
 		$AnimatedSprite2D.flip_h = false
+
+
+func _on_body_entered(body):
+	hide() # Player disappears after being hit.
+	hit.emit()
+	# Must be deferred as we can't change physics properties on a physics callback.
+	$CollisionShape2D.set_deferred("disabled", true)
+
+func start(pos):
+	position = pos
+	show()
+	$CollisionShape2D.disabled = false
