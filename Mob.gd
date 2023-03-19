@@ -2,6 +2,7 @@ extends RigidBody2D
 
 func _ready():
 	$AnimatedSprite2D.play()
+	# get an array with the animation names
 	var mob_types = $AnimatedSprite2D.get_sprite_frames().get_animation_names()
 	$AnimatedSprite2D.animation = mob_types[randi() % mob_types.size()]
 	
